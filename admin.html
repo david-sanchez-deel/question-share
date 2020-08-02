@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <textarea id="question" autocomplete="off"></textarea>
+    <button onclick="send()">Send</button>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  function send() {
+    console.log('send: ');
+    socket.emit('setQuestion', document.getElementById('question').value);
+    socket.on('stats', (data) => {
+      console.log('stats: ', data);
+    })
+  }
+</script>
+</html>

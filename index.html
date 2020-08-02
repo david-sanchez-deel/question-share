@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <h4 id="title"></h4>
+    <div id="options"></div>
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  socket.on('start', (data) => {
+    console.log('start: ', data);
+    document.getElementById('title').innerHTML = data.title;
+    document.getElementById('options').innerHTML = '';
+    
+    const options = document.getElementById('options');
+    data.options.forEach((element, i) => {
+      const container = document.createElement('div');
+      const text = document.createElement('h5');
+      text.innerHTML = element.title;
+      container.appendChild(text);
+
+      const button = document.createElement('button');
+      button.innerHTML = 'Enviar';
+      button.setAttribute('onclick', `send(${i})`);
+      container.appendChild(button);
+
+      options.appendChild(container);
+    });
+
+
+  });
+
+  function send(answer) {
+    socket.emit('answer', answer);
+    document.getElementById('options').innerHTML = '';
+  }
+</script>
+</html>
